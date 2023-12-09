@@ -106,14 +106,24 @@ void GameScene::setupPlayer()
 
 void GameScene::setupCamera()
 {
-#if defined(AX_TARGET_OS_TVOS)
-    getDefaultCamera()->setZoom(1);
-#else
-    getDefaultCamera()->setZoom(2);
-#endif
+    // zoom
+    auto size = Global::getInstance().winSize;
 
-    getDefaultCamera()->setPosition3D(Vec3(0, 0, 900));
-    getDefaultCamera()->lookAt(Vec3(0, 0, 0), Vec3(0, 1, 0));
+    float zoomFactor = 2.0;
+    float zoomX = size.width * zoomFactor;
+    float zoomY = size.height * zoomFactor;
+
+    // camera
+    auto camera = Camera::createOrthographic(zoomX, zoomY, -1024, 1024);
+
+    // position
+    camera->setPosition3D(Vec3(size.width / 2, size.height / 2, 900));
+    camera->lookAt(Vec3(size.width / 2, size.height / 2, 0), Vec3(0, 1, 0));
+
+    // replace camera
+    this->getDefaultCamera()->removeFromParent();
+    _defaultCamera = camera;
+    this->addChild(getDefaultCamera());
 }
 
 void GameScene::setupControls()
