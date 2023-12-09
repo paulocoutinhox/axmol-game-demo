@@ -28,7 +28,6 @@ private:
     Player *player;
 
     Layer *gameLayer;
-    Camera *gameCamera;
 
     void setupGame();
     void setupPhysics();

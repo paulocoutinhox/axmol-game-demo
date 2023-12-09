@@ -106,17 +106,14 @@ void GameScene::setupPlayer()
 
 void GameScene::setupCamera()
 {
-    gameCamera = Camera::create();
-    gameCamera->setPosition3D(Vec3(0, 0, 900));
-    gameCamera->lookAt(Vec3(0, 0, 0), Vec3(0, 1, 0));
-
 #if defined(AX_TARGET_OS_TVOS)
-    gameCamera->setZoom(1);
+    getDefaultCamera()->setZoom(1);
 #else
-    gameCamera->setZoom(2);
+    getDefaultCamera()->setZoom(2);
 #endif
 
-    gameLayer->addChild(gameCamera, 1000);
+    getDefaultCamera()->setPosition3D(Vec3(0, 0, 900));
+    getDefaultCamera()->lookAt(Vec3(0, 0, 0), Vec3(0, 1, 0));
 }
 
 void GameScene::setupControls()
@@ -316,7 +313,7 @@ void GameScene::update(float delta)
 
         // camera
         Vec2 playerPosition = player->getPosition();
-        Vec3 currentCameraPosition = gameCamera->getPosition3D();
+        Vec3 currentCameraPosition = getDefaultCamera()->getPosition3D();
         Vec3 targetCameraPosition = Vec3(playerPosition.x, playerPosition.y, currentCameraPosition.z);
 
         // camera interpolation
@@ -328,7 +325,7 @@ void GameScene::update(float delta)
             currentCameraPosition.z,
         };
 
-        gameCamera->setPosition3D(smoothedPosition);
+        getDefaultCamera()->setPosition3D(smoothedPosition);
 
         break;
     }
